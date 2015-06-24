@@ -11,6 +11,6 @@ Architecture: all
 Depends: ${misc:Depends}, ${perl:Depends}
 Description: Middelware for Datacenter Operations
  .
- XAS is middleware for datacenter operations written in Perl5. It provides 
- standardized methods, modules  and philosophy for constructing the
- application needed to manage a datacenter.
+ XAS is middleware for datacenter operations written in Perl5. This
+ package provides the spooling modules. This will monitor spool
+ directories and send the files to a message queue server as messages.
