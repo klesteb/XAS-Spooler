@@ -1,0 +1,16 @@
+Source: libxas-spooler-perl
+Section: perl
+Priority: optional
+Build-Depends: debhelper (>= 7), perl
+Maintainer: kevin l. esteb <kevin@kesteb.us>
+Standards-Version: 3.9.4
+Homepage: http://scm.kesteb.us/trac
+
+Package: libxas-spooler-perl
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Description: Middelware for Datacenter Operations
+ .
+ XAS is middleware for datacenter operations written in Perl5. It provides 
+ standardized methods, modules  and philosophy for constructing the
+ application needed to manage a datacenter.
