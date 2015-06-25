@@ -91,7 +91,7 @@ you would issue the following commands:
     # service xas-spooler start
     # chkconfig --add xas-spooler
 
-On Windows would use these command:
+On Windows, use these commands:
 
    > xas-spooler --install
    > sc start XAS_SPOOLER
