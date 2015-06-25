@@ -21,11 +21,9 @@ set -e
 
 case "$1" in
     install|upgrade)
-        exit $1
     ;;
     
     abort-upgrade)
-        exit $1
     ;;
     
     *)
