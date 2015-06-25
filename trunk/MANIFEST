@@ -15,6 +15,7 @@ init.d/xas-spooler.debian
 init.d/xas-spooler.rhel
 lib/XAS/Spooler.pm
 lib/XAS/Apps/Spooler/Process.pm
+lib/XAS/Docs/Spooler/Installation.pm
 lib/XAS/Spooler/Connector.pm
 lib/XAS/Spooler/Processor.pm
 lib/XAS/Msgs/Spooler.msg

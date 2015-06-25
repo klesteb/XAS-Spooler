@@ -3,7 +3,13 @@
 use 5.006;
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More;
+
+unless ( $ENV{RELEASE_TESTING} ) {
+    plan( skip_all => "Author tests not required for installation" );
+} else {
+    plan tests => 5;
+}
 
 sub not_in_file_ok {
     my ($filename, %regex) = @_;
@@ -38,6 +44,7 @@ sub module_boilerplate_ok {
 }
 
 TODO: {
+
   local $TODO = "Need to replace the boilerplate text";
 
   not_in_file_ok(README =>
@@ -50,7 +57,10 @@ TODO: {
   );
 
   module_boilerplate_ok('lib/XAS/Spooler.pm');
-
+  module_boilerplate_ok('lib/XAS/Apps/Spooler/Process.pm');
+  module_boilerplate_ok('lib/XAS/Docs/Spooler/Installation.pm');
+  module_boilerplate_ok('lib/XAS/Spooler/Connector.pm');
+  module_boilerplate_ok('lib/XAS/Spooler/Processor.pm');
 
 }
 
