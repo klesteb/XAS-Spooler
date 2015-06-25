@@ -1,5 +1,5 @@
-XAS Spooler - A Spooler for the XAS Environment
-===============================================
+XAS Spooler - A spooler for the XAS Environment
+=========================================================
 
 XAS is a set of modules, procedures and practices to help write
 consistent Perl5 code for an operations environment. For the most part,
@@ -10,14 +10,16 @@ This system is cross platform capable. It will run under Windows as well
 as Unix like environments without a code rewrite. This allows you to
 write your code once and run it wherever.
 
-This code is based on a production system that has been running for over
-10 years. It incorporates the accumulated knowledge of running a
-distributed system, written in Perl5.
-
 Installation of this system is fairly straight forward. You can install
 it in the usual Perl fashion or there are build scripts for creating
-Debian and RedHat install packages. Please see the included README for
+Debian and RHEL install packages. Please see the included README for
 details.
+
+This package provides the modules and procedures to provide a spooler.
+The spooler scan directories in $XAS_SPOOL and processes any files found
+there. These files are converted to messages and sent to queues on
+the Message Queue Server. Once queued, the collector can process them
+and store them into the appropriate datastore.
 
 Extended documentation is available at: http://scm.kesteb.us/trac
 

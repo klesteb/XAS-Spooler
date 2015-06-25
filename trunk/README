@@ -9,9 +9,11 @@ This system is cross platform capable. It will run under Windows as well
 as Unix like environments without a code rewrite. This allows you to
 write your code once and run it where ever.
 
-This code is based on a production system that has been running for over
-10 years. It incorporates the accumulated knowledge of running a
-distributed system, written in Perl5.
+This package provides the modules and procedures to provide a spooler.
+The spooler scan directories in $XAS_SPOOL and processes any files found
+there. These files are converted to messages and sent to queues on
+the Message Queue Server. Once queued, the collector can process and 
+store them into the appropriate datastore.
 
 Installation instructions can be found here:
 
