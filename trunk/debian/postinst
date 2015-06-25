@@ -31,11 +31,9 @@ set -e
 
 case "$1" in
     configure)
-        exit $1
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-        exit $1
     ;;
 
     *)
