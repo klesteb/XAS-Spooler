@@ -16,7 +16,7 @@ use XAS::Class
   filesystem => 'File',
   vars => {
     PARAMS => {
-      -hostname  => 1,
+      -hostname  => { optional => 1, default => undef },
     }
   }
 ;
@@ -70,7 +70,7 @@ sub connection_up {
 }
 
 sub send_packet {
-    my ($self, $palias, $type, $queue, $data, $file) = @_[OBJECT,ARG0..ARG5];
+    my ($self, $palias, $type, $queue, $data, $file) = @_[OBJECT,ARG0..ARG4];
 
     my $alias = $self->alias;
 
@@ -139,6 +139,12 @@ sub init {
 
     my $self = $class->SUPER::init(@_);
 
+    unless (defined($self->{hostname})) {
+
+        $self->{hostname} = $self->env->host;
+
+    }
+
     $self->{events} = XAS::Lib::POE::PubSub->new();
 
     return $self;
@@ -168,52 +174,95 @@ XAS::Spooler::Connector - Perl extension for the XAS environment
 
 =head1 DESCRIPTION
 
-This module use to connect to a message queue server for spoolers. It provides
-the necessary events and methods so the Factory can do its job.
+This module connects to a message queue server for spoolers. All of the spool
+processors funnel messages thru this module. If the connection is lost to
+the server, it signals the processor to stop processing until it is able to
+reconnect to the server.
 
-=head1 PUBLIC METHODS
+=head1 METHODS
 
 =head2 new
 
-This method creates the initial session, setups the scheduling for 
-gather_data() and initializes JSON processing. It takes the following
-configuration items:
+This method inherits from L<XAS::Lib::Stomp::POE::Client|XAS::Lib::Stomp::POE::Client>
+and takes these additional parameters:
 
 =over
 
-=item B<-processor>
-
-A pointer to the ProcessFactory object.
-
-=item B<-queue>
-
-The name of the queue to send messages to on the message queue server.
-
 =item B<-hostname>
 
-The name of the host that this is running on.
+An optional name for the host that is processing these spool files.
 
 =back
 
 =head1 PUBLIC EVENTS
 
-=head2 connection_down
+=head2 connection_down(OBJECT)
 
-This event signal that the connection had been dropped, we are just stopping 
-the collection of data. This is done by notifing the ProcessFactory that
-data collection should stop.
+This event broadcasts that the connection had been dropped.
 
-=head2 send_packet
+=over 4
 
-This event will format the data to be sent to the message queue server.
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 connection_up(OBJECT)
+
+This event broadcasts when the connection is established.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 send_packet(OBJECT,ARG0, ARG1, ARG2, ARG3, ARG4)
+
+Process the data received from the processors. This processing includes
+creating the standard message header, decoding the data and creating a
+serialized message using JSON. This message is then sent to message queue
+server.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=item B<ARG0>
+
+The alias of the processor.
+
+=item B<ARG1>
+
+The type of data.
+
+=item B<ARG2>
+
+The queue to send the message too.
+
+=item B<ARG3>
+
+The actual data to process. This is usually a JSON formated string.
+
+=item B<ARG4>
+
+The full qualified name of the file that was processed. This, along with
+the processor alias, is used for the STOMP receipt.
+
+=back
 
 =head1 SEE ALSO
 
 =over 4
 
-=item L<XAS|XAS>
-
 =item L<XAS::Spooler|XAS::Spooler>
+
+=item L<XAS|XAS>
 
 =back
 
@@ -223,10 +272,10 @@ Kevin L. Esteb, E<lt>kevin@kesteb.usE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2014 by Kevin L. Esteb
+Copyright (c) 2014 Kevin L. Esteb
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.8.8 or,
-at your option, any later version of Perl 5 you may have available.
+This is free software; you can redistribute it and/or modify it under
+the terms of the Artistic License 2.0. For details, see the full text
+of the license at http://www.perlfoundation.org/artistic_license_2_0.
 
 =cut

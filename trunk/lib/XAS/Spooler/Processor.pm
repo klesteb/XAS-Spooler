@@ -132,9 +132,19 @@ sub unlink_file {
 
     $self->log->debug("$alias: entering unlink_file()");
 
-    $self->log->info_msg('unlinking', $alias, $file);
+    try {
 
-    $self->spooler->delete($file);
+        $self->log->info_msg('spooler_unlinking', $alias, $file);
+        $self->spooler->delete($file);
+        
+    } catch {
+
+        my $ex = $_;
+
+        $self->log->error_msg('spooler_unexpected', $alias, $ex);
+
+    };
+
     $poe_kernel->post($alias, 'process_files');
 
     $self->log->debug("$alias: leaving unlink_file()");
@@ -153,7 +163,7 @@ sub process_files {
 
     $self->{count} -= 1;
     $self->{count} = 1 if ($self->{count} < 0);
-    
+
     $self->log->debug("$alias: task count: " . $self->{count});
 
     try {
@@ -164,7 +174,7 @@ sub process_files {
 
                 if (my $data = $self->spooler->read($file)) {
 
-                    $self->log->info_msg('found', $alias, $file->path);
+                    $self->log->info_msg('spooler_found', $alias, $file->path);
                     $poe_kernel->post($connector, 'send_packet', $alias, $type, $queue, $data, $file->path);
 
                 }
@@ -426,41 +436,148 @@ XAS::Spooler::Processor - Perl extension for the XAS environment
 
 =head1 DESCRIPTION
 
-This module scans a spool directory. When any files are found the are 
-processed and sent to the Connector.
+This module scans a spool directory and process any files that are found. 
+Discretionary locking is used to coordinate access to the directory. 
+Scheduling uses cron semantics.
 
-=head1 EVENTS
+=head1 METHODS
 
-This module responds to the following POE events.
+=head2 new
 
-=head2 startup
+This module inherits from L<XAS::Lib::POE::Service|XAS::Lib::POE::Service> and 
+takes these additional parameters:
 
-Fires the start_scan event.
+=over 4
 
-=head2 start_scan
+=item B<-queue>
 
-Schedules the scanning process.
+The queue to send the messages too.
 
-=head2 stop_scan
+=item B<-connector>
 
-Stops the scanning process.
+The alias of the connector session.
 
-=head2 scan
+=item B<-directory>
 
-Performs the scanning process and dispatchs any packets to the Connectors 
-'send_packet' event.
+The directory to scan. The can be relative to $XAS_SPOOL or a fully
+qualified path.
 
-=head2 unlink_file
+=item B<-packet_type>
+
+The name of the message type. 
+
+=item B<-tasks>
+
+The number of sessions processing the internal queue of messages, defaults to 1 session.
+
+=item B<-schedule>
+
+The schedule used to process items in the spool directory. This uses cron
+semantics and defaults to this: '*/1 * * * *'
+
+=back
+
+=head1 PUBLIC EVENTS
+
+=head2 scan(OBJECT)
+
+Starts the directory scan process.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 scan_dir(OBJECT)
+
+Reads one file from the directory and queues it to the internal processing
+queue.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 scan_dir_stop(OBJECT)
+
+Stops the directory scan process.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 unlink_file(OBJECT, ARG0)
 
 Removes the unneeded file from the directory.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=item B<ARG0>
+
+The name of the file to remove.
+
+=back
+
+=head2 process_files(OBJECT)
+
+Removes one file from the internal queue and sends the file contents to the 
+connector for processing.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 pause_processing(OBJECT)
+
+Pauses proccessing because the connection to the message queue server
+is down.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
+
+=head2 resume_processing(OBJECT)
+
+Resumes processing as the connection to the message queue server
+is active.
+
+=over 4
+
+=item B<OBJECT>
+
+The handle for the current self.
+
+=back
 
 =head1 SEE ALSO
 
 =over 4
 
-=item L<XAS|XAS>
-
 =item L<XAS::Spooler|XAS::Spooler>
+
+=item L<XAS|XAS>
 
 =back
 
@@ -470,12 +587,10 @@ Kevin L. Esteb, E<lt>kevin@kesteb.usE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2014 Kevin L. Esteb.
+Copyright (c) 2014 Kevin L. Esteb
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
+This is free software; you can redistribute it and/or modify it under
+the terms of the Artistic License 2.0. For details, see the full text
+of the license at http://www.perlfoundation.org/artistic_license_2_0.
 
 =cut

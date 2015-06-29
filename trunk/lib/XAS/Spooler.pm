@@ -18,20 +18,17 @@ XAS::Spooler - A set of procedures and modules to interact with message queues
 These modules are used to scan directories. Any files found are processed and
 sent to queues on a STOMP based message queue server. 
 
-These modules only support the self generated Alerts and the direct logging 
-for the logstash logging option. 
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc XAS::Spooler
-
 =head1 SEE ALSO
 
 =over 4
 
 =item L<XAS|XAS>
+
+=item L<XAS::Apps::Spooler::Process|XAS::Apps::Spooler::Process>
+
+=item L<XAS::Spooler::Connector|XAS::Spooler::Connector>
+
+=item L<XAS::Spooler::Processor|XAS::Spooler::Processor>
 
 =back
 
