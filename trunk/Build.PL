@@ -3,7 +3,7 @@ use warnings FATAL => 'all';
 use Module::Build;
 
 my $requires = {
-    'perl'       => 5.8.8,
+    'perl'       => 5.008_08,
     'XAS'        => 0.08,
     'XAS::Model' => 0.01,
 };
