@@ -3,8 +3,9 @@ use warnings FATAL => 'all';
 use Module::Build;
 
 my $requires = {
-    'XAS'        => '0.08',
-    'XAS::Model' => '0.01',
+    'perl'       => 5.8.8,
+    'XAS'        => 0.08,
+    'XAS::Model' => 0.01,
 };
     
 my $sysconfig = ( -e '/etc/default' ) ? '/etc/default' : '/etc/sysconfig';
@@ -340,7 +341,7 @@ my $class = Module::Build->subclass(code => <<'EOC');
 EOC
 
 my $builder = $class->new(
-    module_name         => 'XAS-Spooler',
+    module_name         => 'XAS::Spooler',
     license             => 'artistic_2',
     dist_author         => q{Kevin L. Esteb <kevin@kesteb.us>},
     dist_version_from   => 'lib/XAS/Spooler.pm',
@@ -350,6 +351,12 @@ my $builder = $class->new(
     },
     build_requires => {
         'Test::More' => 0,
+    },
+    meta_add => {
+        resources => {
+            homepage   => 'http://scm.kesteb.us/trac',
+            repository => 'http://scm.kesteb.us/git/XAS-Spooler',
+        },
     },
     add_to_cleanup     => [ 'XAS-Spooler-*' ],
     create_makefile_pl => 'traditional',
