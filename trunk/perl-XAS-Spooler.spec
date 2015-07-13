@@ -1,5 +1,5 @@
 Name:           perl-Spooler
-Version:        0.01
+Version:        0.02
 Release:        1%{?dist}
 Summary:        A set of processes to manage spool files
 License:        Artistic 2.0
