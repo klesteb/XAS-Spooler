@@ -87,7 +87,7 @@ sub send_packet {
 
         my $frame = $self->stomp->send(
             -destination => $queue, 
-            -data        => $packet, 
+            -message     => $packet, 
             -receipt     => sprintf("%s;%s", $palias, $file),
             -persistent  => 'true'
         );
