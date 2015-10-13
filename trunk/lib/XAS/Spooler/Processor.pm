@@ -276,7 +276,8 @@ sub session_initialize {
     $self->{spooldir} = $dir;
     $self->{spooler} = XAS::Factory->module(
         spool => {
-            -directory => $self->spooldir
+            -lock      => $self->queue,
+            -directory => $self->spooldir,
         }
     );
 
