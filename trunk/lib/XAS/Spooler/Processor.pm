@@ -41,7 +41,7 @@ sub scan {
 
     try {
 
-        $self->{files} = ();
+        $self->{'files'} = ();
 
         if (my $dh = $self->spooldir->open) {
 
@@ -78,7 +78,7 @@ sub scan_dir {
 
             if ($temp->path =~ /$pattern/) {
 
-                push(@{$self->{files}}, $temp);
+                push(@{$self->{'files'}}, $temp);
 
             }
 
@@ -161,14 +161,14 @@ sub process_files {
 
     $self->log->debug("$alias: entering process_files()");
 
-    $self->{count} -= 1;
-    $self->{count} = 1 if ($self->{count} < 0);
+    $self->{'count'} -= 1;
+    $self->{'count'} = 1 if ($self->{'count'} < 0);
 
-    $self->log->debug("$alias: task count: " . $self->{count});
+    $self->log->debug("$alias: task count: " . $self->{'count'});
 
     try {
 
-        if (my $file = shift(@{$self->{files}})) {
+        if (my $file = shift(@{$self->{'files'}})) {
 
             if ($file->exists) {
 
@@ -233,7 +233,7 @@ sub resume_processing {
 
         $self->log->warn("$alias: resume processing");
 
-        $self->{cron} = POE::Component::Cron->from_cron(
+        $self->{'cron'} = POE::Component::Cron->from_cron(
             $self->schedule => $alias => 'scan'
         );
 
@@ -273,8 +273,8 @@ sub session_initialize {
 
     }
 
-    $self->{spooldir} = $dir;
-    $self->{spooler} = XAS::Factory->module(
+    $self->{'spooldir'} = $dir;
+    $self->{'spooler'} = XAS::Factory->module(
         spool => {
             -lock      => $self->queue,
             -directory => $self->spooldir,
@@ -316,9 +316,9 @@ sub session_idle {
     $self->log->debug("$alias: entering session_idle()");
     $self->log->debug("$alias: task count: " . $self->{count});
 
-    if ($self->{count} <= $self->tasks) {
+    if ($self->{'count'} <= $self->tasks) {
 
-        $self->{count} += 1;
+        $self->{'count'} += 1;
         $poe_kernel->post($alias, 'process_files');
 
     }
@@ -339,7 +339,7 @@ sub session_pause {
     $self->log->debug("$alias: entering session_pause()");
 
     $self->paused(1);
-    $self->{files} = ();
+    $self->{'files'} = ();
     $poe_kernel->alarm_remove_all();
 
     if (my $cron = $self->cron) {
@@ -364,7 +364,7 @@ sub session_resume {
     $self->log->debug("$alias: entering session_resume()");
 
     $self->paused(0);
-    $self->{cron} = POE::Component::Cron->from_cron(
+    $self->{'cron'} = POE::Component::Cron->from_cron(
         $self->schedule => $alias => 'scan'
     );
 
@@ -408,8 +408,8 @@ sub init {
 
     my $self = $class->SUPER::init(@_);
 
-    $self->{count}  = 1;
-    $self->{events} = XAS::Lib::POE::PubSub->new();
+    $self->{'count'}  = 1;
+    $self->{'events'} = XAS::Lib::POE::PubSub->new();
 
     return $self;
 

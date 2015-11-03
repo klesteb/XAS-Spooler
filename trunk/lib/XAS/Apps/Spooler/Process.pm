@@ -77,12 +77,12 @@ sub main {
 sub options {
     my $self = shift;
 
-    $self->{host} = $self->env->mqserver;
-    $self->{port} = $self->env->mqport;
+    $self->{'host'} = $self->env->mqserver;
+    $self->{'port'} = $self->env->mqport;
 
     return {
-        'host=s' => \$self->{host},
-        'port=s' => \$self->{port}
+        'host=s' => \$self->{'host'},
+        'port=s' => \$self->{'port'}
     };
 
 }

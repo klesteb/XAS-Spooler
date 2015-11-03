@@ -139,13 +139,13 @@ sub init {
 
     my $self = $class->SUPER::init(@_);
 
-    unless (defined($self->{hostname})) {
+    unless (defined($self->{'hostname'})) {
 
-        $self->{hostname} = $self->env->host;
+        $self->{'hostname'} = $self->env->host;
 
     }
 
-    $self->{events} = XAS::Lib::POE::PubSub->new();
+    $self->{'events'} = XAS::Lib::POE::PubSub->new();
 
     return $self;
 
