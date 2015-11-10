@@ -177,14 +177,18 @@ sub process_files {
 
     try {
 
-        if (my $file = shift(@{$self->{'files'}})) {
+        unless ($self->paused) {
 
-            if ($file->exists) {
+            if (my $file = shift(@{$self->{'files'}})) {
 
-                if (my $data = $self->spooler->read($file)) {
+                if ($file->exists) {
 
-                    $self->log->info_msg('spooler_found', $alias, $file->path);
-                    $poe_kernel->post($connector, 'send_packet', $alias, $type, $queue, $data, $file);
+                    if (my $data = $self->spooler->read($file)) {
+
+                        $self->log->info_msg('spooler_found', $alias, $file->path);
+                        $poe_kernel->post($connector, 'send_packet', $alias, $type, $queue, $data, $file);
+
+                    }
 
                 }
 
