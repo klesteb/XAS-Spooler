@@ -1,6 +1,6 @@
 package XAS::Spooler::Connector;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use POE;
 use Try::Tiny;
@@ -35,7 +35,7 @@ sub handle_receipt {
 
     $self->log->debug("$alias: alias = $palias, file = $filename");
 
-    $poe_kernel->post($palias, 'unlink_file', File($filename));
+    $poe_kernel->post($palias, 'unlink_file', $filename);
 
 }
 
@@ -88,7 +88,7 @@ sub send_packet {
         my $frame = $self->stomp->send(
             -destination => $queue, 
             -message     => $packet, 
-            -receipt     => sprintf("%s;%s", $palias, $file),
+            -receipt     => sprintf("%s;%s", $palias, $file->name),
             -persistent  => 'true'
         );
 
@@ -103,7 +103,7 @@ sub send_packet {
         $self->log->error("$alias: unable to encode/decode packet, reason: $ex");
         $self->log->debug("$alias: alias = $palias, file = $file");
 
-        $poe_kernel->post($palias, 'unlink_file', File($file));
+        $poe_kernel->post($palias, 'unlink_file', $file);
 
     };
 

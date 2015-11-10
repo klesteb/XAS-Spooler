@@ -27,6 +27,16 @@ sub setup {
     my $self = shift;
 
     my @sections = $self->cfg->Sections();
+    my $connector = XAS::Spooler::Connector->new(
+        -alias           => 'connector',
+        -host            => $self->host,
+        -port            => $self->port,
+        -tcp_keepalive   => 1,
+        -retry_reconnect => 1,
+        -hostname        => $self->env->host,
+    );
+
+    $self->service->register('connector');
 
     foreach my $section (@sections) {
 
@@ -56,18 +66,8 @@ sub main {
 
     $self->setup();
 
-    my $connector = XAS::Spooler::Connector->new(
-        -alias           => 'connector',
-        -host            => $self->host,
-        -port            => $self->port,
-        -tcp_keepalive   => 1,
-        -retry_reconnect => 1,
-        -hostname        => $self->env->host,
-    );
-
     $self->log->info_msg('startup');
 
-    $self->service->register('connector');
     $self->service->run();
 
     $self->log->info_msg('shutdown');

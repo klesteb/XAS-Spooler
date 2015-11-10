@@ -1,6 +1,6 @@
 package XAS::Spooler::Processor;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use POE;
 use Try::Tiny;
@@ -72,17 +72,25 @@ sub scan_dir {
 
     try {
 
-        if (my $file = $dh->read()) {
+        unless ($self->paused) {
 
-            my $temp = File($self->spooldir->path, $file);
+            if (my $file = $dh->read()) {
 
-            if ($temp->path =~ /$pattern/) {
+                my $temp = File($self->spooldir->path, $file);
 
-                push(@{$self->{'files'}}, $temp);
+                if ($temp->path =~ /$pattern/) {
+
+                    push(@{$self->{'files'}}, $temp);
+
+                }
+
+                $poe_kernel->post($alias, 'scan_dir', $dh);
+
+            } else {
+
+                $poe_kernel->post($alias, 'scan_dir_stop', $dh);
 
             }
-
-            $poe_kernel->post($alias, 'scan_dir', $dh);
 
         } else {
 
@@ -134,8 +142,9 @@ sub unlink_file {
 
     try {
 
-        $self->log->info_msg('spooler_unlinking', $alias, $file);
-        $self->spooler->delete($file);
+        my $path = File($self->spooldir, $file);
+        $self->log->info_msg('spooler_unlinking', $alias, $path);
+        $self->spooler->delete($path);
         
     } catch {
 
@@ -175,7 +184,7 @@ sub process_files {
                 if (my $data = $self->spooler->read($file)) {
 
                     $self->log->info_msg('spooler_found', $alias, $file->path);
-                    $poe_kernel->post($connector, 'send_packet', $alias, $type, $queue, $data, $file->path);
+                    $poe_kernel->post($connector, 'send_packet', $alias, $type, $queue, $data, $file);
 
                 }
 
