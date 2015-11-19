@@ -46,7 +46,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 . /lib/lsb/init-functions
 
-PARAMS="--pidfile $PIDFILE --logfile $LOGFILE --cfgfile $CFGFILE --daemon"
+PARAMS="--pid-file $PIDFILE --log-file $LOGFILE --cfg-file $CFGFILE --daemon"
 
 #
 # Function that starts the daemon/service

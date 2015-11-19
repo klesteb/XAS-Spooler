@@ -30,7 +30,7 @@ if [ -f /etc/profile.d/xas.sh ]; then
     . /etc/profile.d/xas.sh
 fi
 
-PARAMS="--pidfile $PIDFILE --logfile $LOGFILE --cfgfile $CFGFILE --daemon"
+PARAMS="--pid-file $PIDFILE --log-file $LOGFILE --cfg-file $CFGFILE --daemon"
 
 # integrate the RHEL functions
 
