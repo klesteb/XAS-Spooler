@@ -2,15 +2,18 @@ Source: libxas-spooler-perl
 Section: perl
 Priority: optional
 Build-Depends: debhelper (>= 7), perl
-Maintainer: kevin l. esteb <kevin@kesteb.us>
+Maintainer: Kevin L. Esteb <kevin@kesteb.us>
 Standards-Version: 3.9.4
 Homepage: http://scm.kesteb.us/trac
 
 Package: libxas-spooler-perl
 Architecture: all
 Depends: ${misc:Depends}, ${perl:Depends}
-Description: Middelware for Datacenter Operations
+Description: Middleware for Datacenter Operations - spooler
  .
- XAS is middleware for datacenter operations written in Perl5. This
- package provides the spooling modules. This will monitor spool
+ XAS is Middleware for Datacenter Operations. It provides standardized
+ methods, modules and philosophy for constructing large distributed
+ applications that are the backbone of your operations center.
+ .
+ This package provides the spooling modules. This will monitor spool
  directories and send the files to a message queue server as messages.
