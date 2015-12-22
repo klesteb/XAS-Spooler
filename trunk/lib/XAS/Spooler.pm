@@ -61,6 +61,8 @@ This will display the utilities man page.
 
 =over 4
 
+=item L<XAS::Docs::Spooler::Installation|XAS::Docs::Spooler::Installation>
+
 =item L<XAS::Apps::Spooler::Process|XAS::Apps::Spooler::Process>
 
 =item L<XAS::Spooler::Connector|XAS::Spooler::Connector>
