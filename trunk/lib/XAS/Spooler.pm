@@ -21,14 +21,15 @@ buffer line printer output. In our case it is being used to implement a store
 and forward messaging scheme. Which in itself, is almost as old a spooling.
 
 When a process wants to send a message, it creates a spool file. The spool file
-is a serialized Perl data structure in JSON format, with special headers.
-The spooler scans the spool directory and sends the packet to an appropiate
-queue on a message queue server. The protocol used to do this is known as
-STOMP, which is a text based protocol.
+is a serialized Perl data structure in L<JSON|http://json.org/> format, with 
+special headers. The spooler scans the spool directory and sends the packet 
+to an appropriate queue on a message queue server. L<XAS::Collector|XAS::Collector> 
+is used as the endpoint to handle those messages. The messaging protocol used 
+by the message queue server is known as STOMP, which is a text based protocol.
 
 The reason to do all of this, is to decouple the message sender from the
 message receiver. This simplifies the sender. There is no need to implement
-all of the logic to open network conections and the maintainence of those 
+all of the logic to open network connections and the maintenance of those 
 connections. It also allows for buffering of the message stream. A fast sender
 doesn't have to worry about a slow receiver. The spooler takes care of this.
 
@@ -42,6 +43,20 @@ This is the actual spooler. It reads a configuration file to determine which
 spool directories to scan. The configuration file also says which queues to
 use for those packets.
 
+The configuration file is documented here: L<XAS::Apps::Spooler::Process|XAS::Apps::Spooler::Process>
+
+=over 4
+
+=item xas-spooler --help
+
+This will display a brief help screen on command options.
+
+=item xas-xpooler --manual
+
+This will display the utilities man page.
+
+=back
+
 =head1 SEE ALSO
 
 =over 4
@@ -51,6 +66,8 @@ use for those packets.
 =item L<XAS::Spooler::Connector|XAS::Spooler::Connector>
 
 =item L<XAS::Spooler::Processor|XAS::Spooler::Processor>
+
+=item L<XAS::Spooler|XAS::Spooler>
 
 =item L<XAS|XAS>
 

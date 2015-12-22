@@ -197,6 +197,10 @@ The port that the message queue server is listening too.
 
 =over 4
 
+=item L<XAS::Spooler::Connector|XAS::Spooler::Connector>
+
+=item L<XAS::Spooler::Processor|XAS::Spooler::Processor>
+
 =item L<XAS::Spooler|XAS::Spooler>
 
 =item L<XAS|XAS>
