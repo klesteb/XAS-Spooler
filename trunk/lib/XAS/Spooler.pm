@@ -25,7 +25,8 @@ is a serialized Perl data structure in L<JSON|http://json.org/> format, with
 special headers. The spooler scans the spool directory and sends the packet 
 to an appropriate queue on a message queue server. L<XAS::Collector|XAS::Collector> 
 is used as the endpoint to handle those messages. The messaging protocol used 
-by the message queue server is known as STOMP, which is a text based protocol.
+by the message queue server is known as L<STOMP|http://stomp.github.io/>, 
+which is a text based protocol.
 
 The reason to do all of this, is to decouple the message sender from the
 message receiver. This simplifies the sender. There is no need to implement
