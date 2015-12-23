@@ -47,11 +47,11 @@ The configuration file is documented here: L<XAS::Apps::Spooler::Process|XAS::Ap
 
 =over 4
 
-=item xas-spooler --help
+=item B<xas-spooler --help>
 
 This will display a brief help screen on command options.
 
-=item xas-xpooler --manual
+=item B<xas-xpooler --manual>
 
 This will display the utilities man page.
 
