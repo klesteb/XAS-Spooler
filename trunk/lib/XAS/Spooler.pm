@@ -51,7 +51,7 @@ The configuration file is documented here: L<XAS::Apps::Spooler::Process|XAS::Ap
 
 This will display a brief help screen on command options.
 
-=item B<xas-xpooler --manual>
+=item B<xas-spooler --manual>
 
 This will display the utilities man page.
 
