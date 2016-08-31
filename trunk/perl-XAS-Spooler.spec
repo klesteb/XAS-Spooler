@@ -12,7 +12,7 @@ BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Test::More)
 Requires:       perl(XAS) >= 0.14
 Requires:       perl(XAS::Model) >= 0.01
-Requires:       perl(POE::Component::Cron)>= 0.21
+Requires:       perl(POE::Component::Cron)>= 0.021
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %define _initd      %{_sysconfdir}/rc.d/init.d

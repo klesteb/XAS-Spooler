@@ -6,7 +6,7 @@ my $requires = {
     'perl'                 => 5.008_08,
     'XAS'                  => 0.08,
     'XAS::Model'           => 0.01,
-    'POE::Component::Cron' => 0.21,
+    'POE::Component::Cron' => 0.021,
 };
     
 my $sysconfig = ( -e '/etc/default' ) ? '/etc/default' : '/etc/sysconfig';
