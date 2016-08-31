@@ -1,5 +1,5 @@
 Name:           perl-Spooler
-Version:        0.02
+Version:        0.03
 Release:        1%{?dist}
 Summary:        A set of processes to manage spool files
 License:        Artistic 2.0
@@ -10,7 +10,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl(Module::Build)
 BuildRequires:  perl(Test::More)
-Requires:       perl(XAS) >= 0.08
+Requires:       perl(XAS) >= 0.14
+Requires:       perl(XAS::Model) >= 0.01
+Requires:       perl(POE::Component::Cron)>= 0.21
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
 %define _initd      %{_sysconfdir}/rc.d/init.d
@@ -20,7 +22,6 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 %define _xasconf    %{_sysconfdir}/xas
 
 %if 0%{?rhel} == 6
-%define _mandir /usr/local/share/man
 %{?filter_setup: %{?perl_default_filter} }
 %filter_from_requires /Win32/d
 %filter_from_provides /Win32/d
@@ -31,20 +32,20 @@ Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $versi
 A set of processes to manage spool files
 
 %prep
-%setup -q -n XAS-XXXX-%{version}
+%setup -q -n XAS-Spooler-%{version}
 
 %if 0%{?rhel} == 5
 cat << \EOF > %{name}-prov
 #!/bin/sh
 %{__perl_provides} $* | sed -e '/Win32/d'
 EOF
-%global __perl_provides %{_builddir}/WPM-%{version}/%{name}-prov
+%global __perl_provides %{_builddir}/XAS-Spooler-%{version}/%{name}-prov
 chmod +x %{__perl_provides}
 cat << \EOF > %{name}-req
 #!/bin/sh
 %{__perl_requires} $* | sed -e '/Win32/d'
 EOF
-%global __perl_requires %{_builddir}/WPM-%{version}/%{name}-req
+%global __perl_requires %{_builddir}/XAS-Spooler-%{version}/%{name}-req
 chmod +x %{__perl_requires}
 %endif
 
